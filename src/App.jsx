@@ -8,9 +8,9 @@ import { markers } from "./data";
 function App() {
   const [selectedCategories, setSelectedCategories] = useState([
     "Académico",
-    "Cultural",
-    "Deportivo",
-    "Recreativo",
+    "Cultura",
+    "Deporte",
+    "Salud",
     "Bienestar",
   ]);
 
