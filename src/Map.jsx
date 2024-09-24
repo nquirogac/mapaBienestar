@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -39,93 +40,17 @@ const miAcademico = new L.Icon({
 });
 
 
-const markers = [
-  {
-    id: 1,
-    position: [100, 150],
-    name: "Evento A",
-    description: "Descripción del evento A",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 2,
-    position: [300, 400],
-    name: "Evento B",
-    description: "Descripción del evento B",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Salud",
-  },
-  {
-    id: 3,
-    position: [500, 600],
-    name: "Evento C",
-    description: "Descripción del evento C",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Salud",
-  },
-  {
-    id: 4,
-    position: [600, 300],
-    name: "Evento D",
-    description: "Descripción del evento D",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Salud",
-  },
-  {
-    id: 5,
-    position: [700, 200],
-    name: "Evento E",
-    description: "Descripción del evento E",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 6,
-    position: [300, 150],
-    name: "Evento A",
-    description: "Descripción del evento A",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 7,
-    position: [300, 300],
-    name: "Evento B",
-    description: "Descripción del evento B",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 8,
-    position: [500, 600],
-    name: "Evento C",
-    description: "Descripción del evento C",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 9,
-    position: [600, 300],
-    name: "Evento D",
-    description: "Descripción del evento D",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-  {
-    id: 10,
-    position: [700, 200],
-    name: "Evento E",
-    description: "Descripción del evento E",
-    link: "https://bienestar.bogota.unal.edu.co/",
-    type: "Deporte",
-  },
-];
+function Map({ selectedCategories, markers }) {
+    const filteredMarkers = markers.filter(marker =>
+        selectedCategories.includes(marker.type)
+    );
 
-function Map() {
+    useEffect(() => {
+        console.log("Marcadores visibles:", filteredMarkers);
+    }, [selectedCategories]);
+
   return (
-    <>
-      <h2>Alo</h2>
+    <div className="mainContent">
       <MapContainer
         style={{ height: "800px", width: "100%" }}
         center={[377, 377]}
@@ -142,18 +67,24 @@ function Map() {
             [700, 700],
           ]}
         />
-        {markers.map((marker) => (
-          //markerIcon.iconUrl = "src/assets/Markers/" + marker.type + ".png",
-          <Marker key={marker.id} position={marker.position} icon={(marker.type == "Deporte")? miDeporte:(marker.type == "Salud")? miSalud: (marker.type == "Cultura")? miCultura: (marker.type == "Académico")? miAcademico:miBienestar}>
+        {filteredMarkers.map((marker) => (
+          <Marker 
+          key={marker.id} 
+          position={marker.position} 
+          icon={marker.type === "Deporte" ? miDeporte
+            : marker.type === "Salud" ? miSalud
+                : marker.type === "Cultura" ? miCultura
+                    : marker.type === "Académico" ? miAcademico
+                        : miBienestar}>
             <Popup>
               <h3>{marker.name}</h3>
               <p>{marker.description}</p>
-              <a href="https://github.com/nquirogac">aloooo</a>
+              <a target="_blank" href={marker.link}>Link al evento</a>
             </Popup>
           </Marker>
         ))}
       </MapContainer>
-    </>
+    </div>
   );
 }
 
